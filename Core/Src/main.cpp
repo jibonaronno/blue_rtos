@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "delay.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,19 +43,21 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+TIM_HandleTypeDef htim3;
+
 /* Definitions for blink01 */
 osThreadId_t blink01Handle;
 osThreadAttr_t blink01_attributes; /* = {
-  name : "blink01",
-  stack_size : 128 * 4,
-  priority : (osPriority_t) osPriorityNormal
+  .name = "blink01",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 128 * 4
 }; */
 /* Definitions for blink02 */
 osThreadId_t blink02Handle;
 osThreadAttr_t blink02_attributes; /* = {
-  name : "blink02",
-  priority : (osPriority_t) osPriorityBelowNormal,
-  stack_size : 128 * 4
+  .name = "blink02",
+  .priority = (osPriority_t) osPriorityBelowNormal,
+  .stack_size = 128 * 4
 }; */
 /* USER CODE BEGIN PV */
 
@@ -62,6 +66,7 @@ osThreadAttr_t blink02_attributes; /* = {
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_TIM3_Init(void);
 void StartBlink01(void *argument);
 void StartBlink02(void *argument);
 
@@ -102,6 +107,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
   blink01_attributes.name = "blink01";
@@ -142,6 +148,8 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
 
+  HAL_TIM_Base_Start(&htim3);
+
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
@@ -155,6 +163,7 @@ int main(void)
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
     /* USER CODE END WHILE */
@@ -203,6 +212,51 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 72;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 65535;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -243,6 +297,7 @@ void StartBlink01(void *argument)
 {
   /* USER CODE BEGIN 5 */
 	uint8_t flagToggle = 0;
+	uint16_t lCounter01 = 0;
   /* Infinite loop */
   for(;;)
   {
@@ -254,7 +309,16 @@ void StartBlink01(void *argument)
     if(flagToggle==0)
     {
     	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+    	for(lCounter01=0;lCounter01<10;lCounter01++)
+    	{
+    		delay_us(10000, &htim3);
+    		delay_us(10000, &htim3);
+    		delay_us(10000, &htim3);
+    		delay_us(10000, &htim3);
+    		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+    	}
     	flagToggle = 1;
+    	lCounter01 = 0;
     }
     else
     {
@@ -280,7 +344,7 @@ void StartBlink02(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(200);
+    osDelay(400);
     osThreadFlagsSet(blink01Handle, 0x00000001U);
   }
   /* USER CODE END StartBlink02 */
