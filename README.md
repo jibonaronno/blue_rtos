@@ -1,4 +1,4 @@
-# RTOS on STM32F103C8T6 with C++ support (Experimental)
+# CMSIS RTOS V2 on STM32F103C8T6 with C++ support (Experimental)
 ## Using STM32CubeIDE
 After changing the the filename main.cpp, some generated code did not compiled due to some compatibility issue.<br />
 The code was: <br />
