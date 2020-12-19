@@ -15,4 +15,6 @@ const osThreadAttr_t blink02_attributes = {
   stack_size : 128 * 4
 };
 ```
-These codes were generated and does not support by C++ as the assignment of members are gapped. So I removed the const property and assignes the members in the main function.
+These codes were generated and does not support by C++ as the assignment of members are gapped. So I removed the const property and assignes the members in the main function.<br />
+
+Note that this code is generated from cubemx. So when regenerated the project then these initial codes will get back again and also before regeneration rename main.cpp to main.c . So take care of these codes after regeneration.
