@@ -18,3 +18,6 @@ const osThreadAttr_t blink02_attributes = {
 These codes were generated and does not support by C++ as the assignment of members are gapped. So I removed the const property and assignes the members in the main function.<br />
 
 Note that this code is generated from cubemx. So when regenerated the project then these initial codes will get back again and also before regeneration rename main.cpp to main.c . So take care of these codes after regeneration.
+
+## delay_us(us, htim) features and delay.cpp
+RTOS cannot do us delay. I am applying us delay usiing the help of TIM3. delay.cpp has the delay_us() function. Parameter needs a Timer reference. I am using TIM3. Configured by cubemx as Prescaler:72, Period:65535, ARR:Enabled. At the main() it must need to start by HAL_TIM_Base_Start(&htim3); before osKernelStart(); . 
