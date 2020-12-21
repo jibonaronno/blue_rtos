@@ -1,21 +1,15 @@
 /* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
+/*
+ * Location : C:\Users\aronno\STM32CubeIDE\workspace_1.1.0\blue_rtos
+ * Uploaded to https://github.com/jibonaronno/blue_rtos
+ *
+ * C++ implemented.
+ * Added delay.cpp -> void delay_us (uint32_t us, TIM_HandleTypeDef *htim)
+ * The timer is htim3 or Timer3, preconfigured from cube mx.
+ * Prescaler is 72
+ * Period is 65535
+ * Auto Reload Preload : Enabled
+*/
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
