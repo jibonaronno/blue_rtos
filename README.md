@@ -21,3 +21,13 @@ Note that this code is generated from cubemx. So when regenerated the project th
 
 ## delay_us(us, htim) features and delay.cpp
 RTOS cannot do us delay. I am applying us delay usiing the help of TIM3. delay.cpp has the delay_us() function. Parameter needs a Timer reference. I am using TIM3. Configured by cubemx as Prescaler:72, Period:65535, ARR:Enabled. At the main() it must need to start by HAL_TIM_Base_Start(&htim3); before osKernelStart(); . 
+
+```c
+/* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 72;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 65535;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+```
