@@ -31,3 +31,9 @@ RTOS cannot do us delay. I am applying us delay usiing the help of TIM3. delay.c
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
 ```
+
+## USB CDC VCP Device Configuration
+<img alt="NO IMAGE" src="rtos01.png"><br>
+<img alt="NO IMAGE" src="rtos02.png"><br>
+
+
